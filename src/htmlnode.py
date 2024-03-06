@@ -18,6 +18,16 @@ class HTMLNode:
             prop_str += f' {prop[0]}="{prop[1]}"'
         return prop_str
 
+    def __eq__(self, htmlnode):
+        if not isinstance(htmlnode, HTMLNode):
+            return False
+        return (
+            self.tag == htmlnode.tag and
+            self.value == htmlnode.value and
+            self.children == htmlnode.children and
+            self.props == htmlnode.props
+        )
+
     def __repr__(self):
         repr_str = ""
         for item in self.__dict__.items():
