@@ -42,3 +42,7 @@ class TestLeafNode(unittest.TestCase):
         expected = "<div>Hello<div>World<p>The sky is falling!</p></div><a href=\"https://www.google.com\">google.com</a></div>"
         actual = root.to_html()
         self.assertEqual(expected, actual)
+
+    def test_to_html_given_no_tag(self):
+        root = ParentNode(None, "Hello World")
+        self.assertRaises(ValueError, root.to_html)
