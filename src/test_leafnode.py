@@ -14,3 +14,8 @@ class TestLeafNode(unittest.TestCase):
         expectedB = "<a href=\"https://www.google.com\">google.com</a>"
         actualB = leafnodeB.to_html()
         self.assertEqual(expectedB, actualB)
+
+        leafnodeC = LeafNode(None, "The sky is falling!")
+        expectedC = "The sky is falling!"
+        actualC = leafnodeC.to_html()
+        self.assertEqual(expectedC, actualC)
