@@ -39,7 +39,7 @@ class ParentNode(HTMLNode):
     def to_html(self):
         if self.tag == None:
             raise ValueError("Parent node tag cannot be None")
-        html_str = f"<{self.tag}{self.props_to_html() if self.props != None else ''}>{self.value}"
+        html_str = f"<{self.tag}{self.props_to_html() if self.props != None else ''}>{self.value if self.value != None else ""}"
 
         if self.children != None:
             for child in self.children:
@@ -56,4 +56,4 @@ class LeafNode(HTMLNode):
         if self.tag == None:
             return self.value
         else:
-            return f"<{self.tag}{self.props_to_html() if self.props != None else ""}>{self.value}</{self.tag}>"
+            return f"<{self.tag}{self.props_to_html() if self.props != None else ""}>{self.value if self.value != None else ""}</{self.tag}>"
