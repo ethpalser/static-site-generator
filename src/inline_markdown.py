@@ -91,3 +91,9 @@ def split_nodes_link(old_nodes):
                     new_nodes.append(TextNode(links[link_pos][0], text_type_link, links[link_pos][1]))
                     link_pos += 1
     return new_nodes
+
+def text_to_textnodes(text):
+    if not isinstance(text, str) and not isinstance(text, TextNode):
+        raise ValueError(f"Converting values of {text.__class__} to textnodes is not supported")
+    to_convert = [text] if isinstance(text, TextNode) else [TextNode(text, text_type_text)]
+    return(split_nodes_link(split_nodes_image(split_nodes_delimiter(split_nodes_delimiter(split_nodes_delimiter(to_convert, "**", text_type_bold), "*", text_type_italic), "`", text_type_code))))
