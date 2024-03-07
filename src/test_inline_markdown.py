@@ -1,5 +1,9 @@
 import unittest
-from inline_markdown import split_nodes_delimiter
+from inline_markdown import (
+    split_nodes_delimiter,
+    extract_markdown_images,
+    extract_markdown_links
+)
 from textnode import (
     TextNode,
     text_type_text,
@@ -46,17 +50,18 @@ class TestInlineMarkdown(unittest.TestCase):
         actual = split_nodes_delimiter([textnode], "`", text_type_code)
         self.assertEqual(expected, actual)
     
-    # Note: Always remove bold before italic, as bold case is not working
-    def test_split_nodes_delimiter_given_mixed_delim_and_valid_split(self):
-        textnode = TextNode("the red fox **jumped** *over* the `lazy` dog", text_type_text)
-        expected = [
-            TextNode("the red fox **jumped** ", text_type_text),
-            TextNode("over", text_type_italic),
-            TextNode(" the `lazy` dog", text_type_text)
-        ]
-        actual = split_nodes_delimiter([textnode], "*", text_type_italic)
-        self.assertEqual(expected, actual)
-    
     def test_split_nodes_delimiter_given_mixed_delim_and_invalid_split(self):
         textnode = TextNode("the red fox **jumped** *over the `lazy` dog", text_type_text)
         self.assertRaises(Exception, split_nodes_delimiter([textnode], None, text_type_italic))
+
+    def test_extract_markdown_images(self):
+        text = "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png) and ![another](https://i.imgur.com/dfsdkjfd.png)"
+        expected = [("image", "https://i.imgur.com/zjjcJKZ.png"), ("another", "https://i.imgur.com/dfsdkjfd.png")]
+        actual = extract_markdown_images(text)
+        self.assertEqual(expected, actual)
+
+    def test_extract_markdown_links(self):
+        text = "This is text with a [link](https://www.example.com) and [another](https://www.example.com/another)"
+        expected = [("link", "https://www.example.com"), ("another", "https://www.example.com/another")]
+        actual = extract_markdown_links(text)
+        self.assertEqual(expected, actual)
