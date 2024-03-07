@@ -16,8 +16,7 @@ from block_markdown import (
     block_to_paragraph_html_node,
     markdown_to_html_node
 )
-from parentnode import ParentNode
-from leafnode import LeafNode
+from htmlnode import ParentNode, LeafNode
 
 class TestBlockMarkdown(unittest.TestCase):
 

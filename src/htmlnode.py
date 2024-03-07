@@ -33,3 +33,27 @@ class HTMLNode:
         for item in self.__dict__.items():
             repr_str += f"{item[0]}: {item[1]}\n"
         return repr_str
+
+class ParentNode(HTMLNode):
+
+    def to_html(self):
+        if self.tag == None:
+            raise ValueError("Parent node tag cannot be None")
+        html_str = f"<{self.tag}{self.props_to_html() if self.props != None else ''}>{self.value}"
+
+        if self.children != None:
+            for child in self.children:
+                html_str += child.to_html()
+
+        return html_str + f"</{self.tag}>"
+
+class LeafNode(HTMLNode):
+
+    def __init__(self, tag = None, value = None, props = None):
+        super().__init__(tag, value, None, props)
+
+    def to_html(self):
+        if self.tag == None:
+            return self.value
+        else:
+            return f"<{self.tag}{self.props_to_html() if self.props != None else ""}>{self.value}</{self.tag}>"
