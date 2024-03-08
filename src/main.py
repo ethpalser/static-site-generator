@@ -1,10 +1,11 @@
 import os
 import shutil
+from pathlib import Path
 from block_markdown import markdown_to_html_node
 
 def main():
     copy_from_directory("./static", "./public")
-    generate_page("./content/index.md", "./template.html", "./public/index.html")
+    generate_page_recursive("./content", "./template.html", "./public")
 
 def copy_from_directory(src_path, dst_path, is_root = True):
     if not os.path.exists(src_path):
@@ -58,5 +59,16 @@ def read_file_content(path):
         print("I/O exception occurred")
         return None
 
+def generate_page_recursive(src_path, template_path, dst_path):
+    if not os.path.exists(src_path):
+        raise Exception("The directory to copy does not exist")
+    if os.path.isfile(src_path):
+        file_name = Path(src_path).name.split(".")[0]
+        generate_page(src_path, template_path, os.path.dirname(dst_path) + f"/{file_name}.html")
+    else:
+        for child in os.listdir(src_path):
+            src_child_path = os.path.join(src_path, child)
+            dst_child_path = os.path.join(dst_path, child)
+            generate_page_recursive(src_child_path, template_path, dst_child_path)
 
 main()
