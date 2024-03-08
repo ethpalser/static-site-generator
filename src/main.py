@@ -10,7 +10,8 @@ def copy_from_directory(root_dir, target_root_dir, is_root = True):
     if not os.path.exists(root_dir):
         raise Exception("The directory to copy does not exist")
     if is_root:
-        shutil.rmtree(target_root_dir)
+        if os.path.exists(target_root_dir):
+            shutil.rmtree(target_root_dir)
         os.mkdir(target_root_dir)
     for child in os.listdir(root_dir):
         src_path = os.path.join(root_dir, child)
